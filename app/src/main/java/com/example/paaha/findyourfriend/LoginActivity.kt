@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import kotlinx.android.synthetic.main.activity_login.*
 import com.google.firebase.auth.FirebaseAuth
 
@@ -25,11 +26,18 @@ class LoginActivity : AppCompatActivity() {
 
         loginButton.setOnClickListener {
 
+            authorizedLayout.visibility = View.GONE
+            notAuthorizedLayout.visibility = View.VISIBLE
         }
 
         registrationTextView.setOnClickListener{
             val intent = RegistrationActivity.newIntent(this)
             startActivity(intent)
+        }
+
+        logOutButton.setOnClickListener {
+            authorizedLayout.visibility = View.VISIBLE
+            notAuthorizedLayout.visibility = View.GONE
         }
     }
 
