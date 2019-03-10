@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">FindYourFriend</string>
+    <string name="log_in">Log In</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="registration">registration</string>
+    <string name="first_name">First name</string>
+    <string name="second_name">Second Name</string>
+</resources>
