@@ -8,4 +8,10 @@
     <string name="second_name">Second Name</string>
     <string name="map">map</string>
     <string name="log_out">Log out</string>
+    <string name="failed_login">Log in failed</string>
+    <string name="failed_reg">Registration failed</string>
+    <string name="not_valid_email">Not valid email</string>
+    <string name="input_password">input password</string>
+    <string name="input_name">input name</string>
+    <string name="not_equals">passwords not equals</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.ContentFrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".LoginActivity">
@@ -62,15 +62,7 @@
                 android:layout_margin="24dp">
 
             <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/firstNameTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/first_name"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    android:textColor="@android:color/black"/>
-
-            <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/secondNameTextView"
+                    android:id="@+id/nameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/second_name"
