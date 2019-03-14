@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:ems="10"
-            android:hint="@string/second_name"
+            android:hint="@string/display_name"
             android:id="@+id/nameEditText"/>
 
     <android.support.v7.widget.AppCompatEditText

@@ -4,8 +4,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="registration">registration</string>
-    <string name="first_name">First name</string>
-    <string name="second_name">Second Name</string>
+    <string name="display_name">Name</string>
     <string name="map">map</string>
     <string name="log_out">Log out</string>
     <string name="failed_login">Log in failed</string>

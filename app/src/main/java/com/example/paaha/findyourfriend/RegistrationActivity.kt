@@ -16,10 +16,9 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 class RegistrationActivity : AppCompatActivity() {
 
-    var mAuth: FirebaseAuth? = null
+    private var mAuth: FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //TODO: реализовать перенос с экрана регистрации на экран с подтвержденным входом
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
         init()
@@ -33,10 +32,11 @@ class RegistrationActivity : AppCompatActivity() {
                 mAuth?.createUserWithEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString())
                     ?.addOnCompleteListener {
                         if (it.isSuccessful) {
-                            val user = FirebaseAuth.getInstance().currentUser //TODO: добавление имени не работает
-                            val prifile = UserProfileChangeRequest.Builder()
+                            val profile = UserProfileChangeRequest.Builder()
                                 .setDisplayName(nameEditText.text.toString())
                                 .build()
+                            FirebaseAuth.getInstance().currentUser?.updateProfile(profile)
+                            this.finish()
                         } else {
                             Toast.makeText(this, getString(R.string.failed_reg), Toast.LENGTH_SHORT).show()
                             try {
@@ -55,7 +55,6 @@ class RegistrationActivity : AppCompatActivity() {
                             } catch (e: Exception) {
                                 Log.e(RegistrationActivity::class.java.getName(), e.message)
                             }
-
                         }
                     }
             }

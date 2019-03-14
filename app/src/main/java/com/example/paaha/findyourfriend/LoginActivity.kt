@@ -13,11 +13,10 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
-    var mAuth: FirebaseAuth? = null
-    var currentUser: FirebaseUser? = null
+    private var mAuth: FirebaseAuth? = null
+    private var currentUser: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //TODO: добавить автоматическую авторизацию
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         init()
