@@ -29,11 +29,14 @@ class RegistrationActivity : AppCompatActivity() {
 
         registrationButton.setOnClickListener {
             if (isValid()) {
-                mAuth?.createUserWithEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString())
+                mAuth?.createUserWithEmailAndPassword(
+                    emailEditText.text.toString().trim(),
+                    passwordEditText.text.toString().trim()
+                )
                     ?.addOnCompleteListener {
                         if (it.isSuccessful) {
                             val profile = UserProfileChangeRequest.Builder()
-                                .setDisplayName(nameEditText.text.toString())
+                                .setDisplayName(nameEditText.text.toString().trim())
                                 .build()
                             FirebaseAuth.getInstance().currentUser?.updateProfile(profile)
                             this.finish()

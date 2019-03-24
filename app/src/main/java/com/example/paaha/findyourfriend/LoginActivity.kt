@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun logIn() {
-        mAuth?.signInWithEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString())
+        mAuth?.signInWithEmailAndPassword(emailEditText.text.toString().trim(), passwordEditText.text.toString().trim())
             ?.addOnCompleteListener {
                 if (it.isSuccessful) {
                     updateUI(true)
