@@ -6,7 +6,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        tools:context=".RegistrationActivity">
+        tools:context=".activities.RegistrationActivity">
 
     <android.support.v7.widget.AppCompatEditText
             android:layout_width="wrap_content"

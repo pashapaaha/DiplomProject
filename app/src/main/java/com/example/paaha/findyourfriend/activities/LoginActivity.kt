@@ -1,4 +1,4 @@
-package com.example.paaha.findyourfriend
+package com.example.paaha.findyourfriend.activities
 
 import android.content.Context
 import android.content.Intent
@@ -9,9 +9,20 @@ import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.activity_login.*
+import android.Manifest.permission
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.support.v4.content.ContextCompat
+import android.os.Build
+import android.support.v4.app.ActivityCompat
+import android.support.v7.app.AlertDialog
+import com.example.paaha.findyourfriend.R
+import com.example.paaha.findyourfriend.services.GPSService
 
 
 class LoginActivity : AppCompatActivity() {
+
+    private val REQUEST_PERMISSIONS_CODE = 100
 
     private var mAuth: FirebaseAuth? = null
     private var currentUser: FirebaseUser? = null
@@ -44,6 +55,14 @@ class LoginActivity : AppCompatActivity() {
 
         logOutButton.setOnClickListener {
             logOut()
+        }
+
+        mapButton.setOnClickListener {
+            if (permissionIsGranted(permission.ACCESS_COARSE_LOCATION) || permissionIsGranted(permission.ACCESS_FINE_LOCATION)) {
+                startActivity(MapsActivity.newIntent(this))
+            } else {
+                requestGeoPermissions()
+            }
         }
     }
 
@@ -109,6 +128,53 @@ class LoginActivity : AppCompatActivity() {
         }
         return result
     }
+
+
+    private fun checkGeoPermissions() =
+        (!permissionIsGranted(permission.ACCESS_FINE_LOCATION)
+                && !permissionIsGranted(permission.ACCESS_COARSE_LOCATION))
+
+    private fun permissionIsGranted(permissions: String) =
+        ContextCompat.checkSelfPermission(this, permissions) == PackageManager.PERMISSION_GRANTED
+
+    private fun requestGeoPermissions() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,permission.ACCESS_FINE_LOCATION)
+            || ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACCESS_FINE_LOCATION)
+        ) {
+
+            AlertDialog.Builder(this)
+                .setTitle("We can't show map without your locations")
+                .setPositiveButton("Ok") { dialog, _ -> mapButton.callOnClick()}
+                .setNegativeButton("cancel") { dialog, _ -> dialog.dismiss() }
+                .create()
+                .show()
+
+        } else {
+            if (Build.VERSION.SDK_INT >= 23) {
+                requestPermissions(
+                    arrayOf(
+                        permission.ACCESS_FINE_LOCATION,
+                        permission.ACCESS_COARSE_LOCATION
+                    ), REQUEST_PERMISSIONS_CODE
+                )
+            }
+        }
+    }
+
+    private fun runtimePermissions(): Boolean {
+        if (Build.VERSION.SDK_INT >= 23 && checkGeoPermissions()) {
+            requestPermissions(
+                arrayOf(
+                    permission.ACCESS_FINE_LOCATION,
+                    permission.ACCESS_COARSE_LOCATION
+                ), REQUEST_PERMISSIONS_CODE
+            )
+
+            return true
+        }
+        return false
+    }
+
 
     companion object {
         fun newIntent(packageContext: Context) =

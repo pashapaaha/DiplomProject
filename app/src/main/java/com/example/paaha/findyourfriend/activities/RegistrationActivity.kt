@@ -1,4 +1,4 @@
-package com.example.paaha.findyourfriend
+package com.example.paaha.findyourfriend.activities
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.example.paaha.findyourfriend.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_registration.*
 import com.google.firebase.auth.UserProfileChangeRequest
