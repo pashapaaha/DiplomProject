@@ -7,17 +7,22 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.paaha.findyourfriend.R
-import com.google.firebase.auth.FirebaseAuth
+import com.example.paaha.findyourfriend.model.User
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.*
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_registration.*
-import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 
 class RegistrationActivity : AppCompatActivity() {
 
+    private val TAG = this.javaClass.name
+
     private var mAuth: FirebaseAuth? = null
+
+    private var email: String = ""
+    private var password: String = ""
+    private var name: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,43 +30,28 @@ class RegistrationActivity : AppCompatActivity() {
         init()
     }
 
-    fun init() {
+    private fun init() {
         mAuth = FirebaseAuth.getInstance()
 
         registrationButton.setOnClickListener {
-            if (isValid()) {
-                mAuth?.createUserWithEmailAndPassword(
-                    emailEditText.text.toString().trim(),
-                    passwordEditText.text.toString().trim()
-                )
-                    ?.addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            val profile = UserProfileChangeRequest.Builder()
-                                .setDisplayName(nameEditText.text.toString().trim())
-                                .build()
-                            FirebaseAuth.getInstance().currentUser?.updateProfile(profile)
-                            this.finish()
-                        } else {
-                            Toast.makeText(this, getString(R.string.failed_reg), Toast.LENGTH_SHORT).show()
-                            try {
-                                if (it.exception != null) {
-                                    throw it.exception!!
-                                }
-                            } catch (e: FirebaseAuthWeakPasswordException) {
-                                passwordEditText.error = e.message
-                                passwordEditText.requestFocus()
-                            } catch (e: FirebaseAuthUserCollisionException) {
-                                emailEditText.error = e.message
-                                emailEditText.requestFocus()
-                            } catch (e: FirebaseAuthInvalidCredentialsException) {
-                                emailEditText.error = e.message
-                                emailEditText.requestFocus()
-                            } catch (e: Exception) {
-                                Log.e(RegistrationActivity::class.java.getName(), e.message)
-                            }
-                        }
+            Log.d(TAG, "button on click")
+            if (!isValid())
+                return@setOnClickListener
+
+            email = emailEditText.text.toString().trim()
+            password = passwordEditText.text.toString().trim()
+            name = nameEditText.text.toString().trim()
+
+            mAuth?.createUserWithEmailAndPassword(email, password)
+                ?.addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Log.d(TAG, "is success")
+                        isSuccess()
+                    } else {
+                        Log.d(TAG, "is wrong")
+                        isFailed(it)
                     }
-            }
+                }
         }
     }
 
@@ -99,6 +89,44 @@ class RegistrationActivity : AppCompatActivity() {
         }
 
         return result
+    }
+
+
+    private fun isSuccess() {
+        val uid = FirebaseAuth.getInstance().uid ?: return
+
+        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
+        Log.d(TAG, "reference get")
+        val user = User(uid, email, name)
+        ref.setValue(user)
+            .addOnSuccessListener {
+                Log.d(TAG, "user $user was added")
+            }
+            .addOnFailureListener{
+                Log.d(TAG, "wrong added")
+            }
+
+        this.finish()
+    }
+
+    private fun isFailed(task: Task<AuthResult>) {
+        Toast.makeText(this, getString(R.string.failed_reg), Toast.LENGTH_SHORT).show()
+        try {
+            if (task.exception != null) {
+                throw task.exception!!
+            }
+        } catch (e: FirebaseAuthWeakPasswordException) {
+            passwordEditText.error = e.message
+            passwordEditText.requestFocus()
+        } catch (e: FirebaseAuthUserCollisionException) {
+            emailEditText.error = e.message
+            emailEditText.requestFocus()
+        } catch (e: FirebaseAuthInvalidCredentialsException) {
+            emailEditText.error = e.message
+            emailEditText.requestFocus()
+        } catch (e: Exception) {
+            Log.e(RegistrationActivity::class.java.name, e.message)
+        }
     }
 
     companion object {

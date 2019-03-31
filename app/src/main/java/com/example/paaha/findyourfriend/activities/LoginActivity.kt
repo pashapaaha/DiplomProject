@@ -10,14 +10,18 @@ import android.widget.Toast
 import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.activity_login.*
 import android.Manifest.permission
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.support.v4.content.ContextCompat
 import android.os.Build
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import com.example.paaha.findyourfriend.R
-import com.example.paaha.findyourfriend.services.GPSService
+import com.example.paaha.findyourfriend.model.User
+import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 class LoginActivity : AppCompatActivity() {
@@ -35,8 +39,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        currentUser = mAuth?.currentUser
-        updateUI(currentUser != null)
+        checkUser()
     }
 
     private fun init() {
@@ -70,39 +73,23 @@ class LoginActivity : AppCompatActivity() {
         mAuth?.signInWithEmailAndPassword(emailEditText.text.toString().trim(), passwordEditText.text.toString().trim())
             ?.addOnCompleteListener {
                 if (it.isSuccessful) {
-                    updateUI(true)
+                    checkUser()
                 } else {
-                    Toast.makeText(this, getString(R.string.failed_login), Toast.LENGTH_SHORT).show()
-                    try {
-                        if (it.exception != null) {
-                            throw it.exception!!
-                        }
-                    } catch (e: FirebaseAuthWeakPasswordException) {
-                        passwordEditText.error = e.message
-                        passwordEditText.requestFocus()
-                    } catch (e: FirebaseAuthUserCollisionException) {
-                        emailEditText.error = e.message
-                        emailEditText.requestFocus()
-                    } catch (e: FirebaseAuthInvalidCredentialsException) {
-                        emailEditText.error = e.message
-                        emailEditText.requestFocus()
-                    } catch (e: Exception) {
-                        Log.e(RegistrationActivity::class.java.name, e.message)
-                    }
+                    isFailed(it)
                 }
             }
     }
 
     private fun logOut() {
         mAuth?.signOut()
-        updateUI(false)
+        updateUI(null)
     }
 
-    private fun updateUI(isAuthorized: Boolean) {
-        if (isAuthorized) {
+    private fun updateUI(user: User?) {
+        if (user != null) {
 
-            nameTextView.text = currentUser?.displayName ?: "null"
-            emailTextView.text = currentUser?.email ?: "null"
+            nameTextView.text = user.name
+            emailTextView.text = user.email
 
             authorizedLayout.visibility = View.GONE
             notAuthorizedLayout.visibility = View.VISIBLE
@@ -175,6 +162,47 @@ class LoginActivity : AppCompatActivity() {
         return false
     }
 
+
+
+    private fun checkUser(){
+        currentUser = FirebaseAuth.getInstance()?.currentUser
+        if (currentUser != null) {
+            val ref = FirebaseDatabase.getInstance().getReference("/users").child(currentUser!!.uid)
+            var user: User?
+            ref.addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) { }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    user = p0.getValue(User::class.java)
+                    user?.let { updateUI(user) }
+                }
+            })
+
+        } else {
+            updateUI(null)
+        }
+    }
+
+
+    private fun isFailed(task: Task<AuthResult>) {
+        Toast.makeText(this, getString(R.string.failed_login), Toast.LENGTH_SHORT).show()
+        try {
+            if (task.exception != null) {
+                throw task.exception!!
+            }
+        } catch (e: FirebaseAuthWeakPasswordException) {
+            passwordEditText.error = e.message
+            passwordEditText.requestFocus()
+        } catch (e: FirebaseAuthUserCollisionException) {
+            emailEditText.error = e.message
+            emailEditText.requestFocus()
+        } catch (e: FirebaseAuthInvalidCredentialsException) {
+            emailEditText.error = e.message
+            emailEditText.requestFocus()
+        } catch (e: Exception) {
+            Log.e(RegistrationActivity::class.java.name, e.message)
+        }
+    }
 
     companion object {
         fun newIntent(packageContext: Context) =
