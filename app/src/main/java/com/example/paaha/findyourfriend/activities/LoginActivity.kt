@@ -205,7 +205,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun newIntent(packageContext: Context) =
-            Intent(packageContext, LoginActivity::class.java)
+        fun newIntent(packageContext: Context): Intent {
+            val intent = Intent(packageContext, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            return intent
+        }
     }
 }
