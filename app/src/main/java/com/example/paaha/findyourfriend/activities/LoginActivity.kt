@@ -16,7 +16,6 @@ import android.os.Build
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import com.example.paaha.findyourfriend.R
-import com.example.paaha.findyourfriend.UsersListActivity
 import com.example.paaha.findyourfriend.model.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot

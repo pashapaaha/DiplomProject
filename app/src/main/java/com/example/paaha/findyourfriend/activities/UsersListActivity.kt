@@ -1,10 +1,11 @@
-package com.example.paaha.findyourfriend
+package com.example.paaha.findyourfriend.activities
 
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.paaha.findyourfriend.R
 import com.example.paaha.findyourfriend.model.FriendInfo
 import com.example.paaha.findyourfriend.model.User
 import com.google.firebase.auth.FirebaseAuth
@@ -20,7 +21,7 @@ import kotlinx.android.synthetic.main.friend_list_item_layout.view.*
 
 class UsersListActivity : AppCompatActivity() {
 
-    val TAG = this.javaClass.name
+    private val TAG = this.javaClass.name
 
     val adapter = GroupAdapter<ViewHolder>()
 
@@ -28,9 +29,12 @@ class UsersListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users_list)
 
-
         fetchFriends()
+        friend_recycler_view.adapter = adapter
 
+        fab.setOnClickListener{
+            startActivity(SearchNewFriendsActivity.newIntent(this))
+        }
     }
 
     private fun fetchFriends() {
@@ -44,15 +48,13 @@ class UsersListActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 snapshot.children.forEach {
                     val friendInfo = it.getValue(FriendInfo::class.java)
-                    friendInfo?.let { getUser(friendInfo.friend) }
+                    friendInfo?.let { addUserToAdapter(friendInfo.friend) }
                 }
             }
         })
-
-        friend_recycler_view.adapter = adapter
     }
 
-    private fun getUser(friend: String) {
+    private fun addUserToAdapter(friend: String) {
         val ref = FirebaseDatabase.getInstance().getReference("/users").child(friend)
 
         ref.addListenerForSingleValueEvent(object : ValueEventListener {

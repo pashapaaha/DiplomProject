@@ -14,4 +14,7 @@
     <string name="input_name">input name</string>
     <string name="not_equals">passwords not equals</string>
     <string name="title_activity_maps">Map</string>
+    <string name="friends">Friends</string>
+    <string name="find">find</string>
+    <string name="input_value">input value</string>
 </resources>
