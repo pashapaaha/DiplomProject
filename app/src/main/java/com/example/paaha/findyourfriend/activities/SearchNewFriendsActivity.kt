@@ -5,7 +5,9 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.example.paaha.findyourfriend.R
+import com.example.paaha.findyourfriend.model.FriendInfo
 import com.example.paaha.findyourfriend.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -54,21 +56,19 @@ class SearchNewFriendsActivity : AppCompatActivity() {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 adapter.clear()
-                snapshot.children.forEach{
+                snapshot.children.forEach {
                     val user = it.getValue(User::class.java)
                     Log.d(TAG, "find user")
-                    if(user != null && user.email.contains(emailPart)){
+                    if (user != null && user.email.contains(emailPart)) {
                         val currentEmail = FirebaseAuth.getInstance().currentUser?.email
-                        if(user.email == currentEmail)
+                        if (user.email == currentEmail)
                             return@forEach
                         Log.d(TAG, "add user with email")
-                        adapter.add(EmailItem(user.email))
+                        adapter.add(EmailItem(user))
                     }
                 }
-
             }
         })
-
     }
 
     companion object {
@@ -79,10 +79,32 @@ class SearchNewFriendsActivity : AppCompatActivity() {
     }
 }
 
-class EmailItem(val email: String) : Item<ViewHolder>() {
+class EmailItem(val user: User) : Item<ViewHolder>() {
     override fun getLayout() = R.layout.one_string_layout
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.itemView.stringTextView.text = email
+        viewHolder.itemView.stringTextView.text = user.email
+
+        viewHolder.itemView.setOnClickListener {
+            addFriend(viewHolder.itemView.context)
+        }
+        //TODO: проверить обработчик нажатия кнопки. Должен добавляться пользователь
+        //TODO: добавить проверку, что друг еще не добавлен
+    }
+
+    private fun addFriend(context: Context){
+        val uid = FirebaseAuth.getInstance().uid ?: return
+
+        val ref = FirebaseDatabase.getInstance().getReference("/friends/$uid").push()
+        if (ref.key == null)
+            return
+        val id = ref.key!!
+        ref.setValue(FriendInfo(id, user.uid))
+            .addOnSuccessListener {
+                (context as AppCompatActivity).finish()
+            }
+            .addOnFailureListener {
+                Log.d(this.javaClass.name, "add friend was failed")
+            }
     }
 }
