@@ -63,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
 
         mapButton.setOnClickListener {
             if (permissionIsGranted(permission.ACCESS_COARSE_LOCATION) || permissionIsGranted(permission.ACCESS_FINE_LOCATION)) {
-//                startActivity(MapsActivity.newIntent(this))
+//                startActivity(MapsActivity.newIntent(this))//TODO: it will return
                 startActivity(UsersListActivity.newIntent(this))
             } else {
                 requestGeoPermissions()

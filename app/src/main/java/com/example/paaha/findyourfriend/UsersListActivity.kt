@@ -4,10 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Adapter
-import com.example.paaha.findyourfriend.activities.LoginActivity
+import android.util.Log
+import com.example.paaha.findyourfriend.model.FriendInfo
 import com.example.paaha.findyourfriend.model.User
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
@@ -16,20 +20,50 @@ import kotlinx.android.synthetic.main.friend_list_item_layout.view.*
 
 class UsersListActivity : AppCompatActivity() {
 
+    val TAG = this.javaClass.name
+
+    val adapter = GroupAdapter<ViewHolder>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users_list)
-        val adapter = GroupAdapter<ViewHolder>()
 
-        adapter.add(FriendItem(User("", "", "1")))
-        adapter.add(FriendItem(User("", "", "2")))
-        adapter.add(FriendItem(User("", "", "3")))
-        adapter.add(FriendItem(User("", "", "4")))
-        adapter.add(FriendItem(User("", "", "5")))
+
+        fetchFriends()
+
+    }
+
+    private fun fetchFriends() {
+        Log.d(TAG, "fetchFriends method")
+        val uid = FirebaseAuth.getInstance()?.uid ?: return
+        val ref = FirebaseDatabase.getInstance().getReference("/friends/$uid")
+
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {}
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                snapshot.children.forEach {
+                    val friendInfo = it.getValue(FriendInfo::class.java)
+                    friendInfo?.let { getUser(friendInfo.friend) }
+                }
+            }
+        })
 
         friend_recycler_view.adapter = adapter
     }
 
+    private fun getUser(friend: String) {
+        val ref = FirebaseDatabase.getInstance().getReference("/users").child(friend)
+
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {}
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.getValue(User::class.java)
+                user?.let { adapter.add(FriendItem(user)) }
+            }
+        })
+    }
 
     companion object {
         fun newIntent(packageContext: Context): Intent {
@@ -39,7 +73,7 @@ class UsersListActivity : AppCompatActivity() {
     }
 }
 
-class FriendItem(val user: User): Item<ViewHolder>(){
+class FriendItem(val user: User) : Item<ViewHolder>() {
     override fun getLayout() = R.layout.friend_list_item_layout
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
