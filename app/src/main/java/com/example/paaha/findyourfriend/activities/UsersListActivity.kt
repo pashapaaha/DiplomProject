@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import com.example.paaha.findyourfriend.R
 import com.example.paaha.findyourfriend.model.FriendInfo
+import com.example.paaha.findyourfriend.model.FriendInfoList
 import com.example.paaha.findyourfriend.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -46,6 +47,7 @@ class UsersListActivity : AppCompatActivity() {
             override fun onCancelled(p0: DatabaseError) {}
 
             override fun onDataChange(snapshot: DataSnapshot) {
+                FriendInfoList.clear()
                 snapshot.children.forEach {
                     val friendInfo = it.getValue(FriendInfo::class.java)
                     friendInfo?.let { addUserToAdapter(friendInfo.friend) }
@@ -63,6 +65,7 @@ class UsersListActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val user = snapshot.getValue(User::class.java)
                 user?.let { adapter.add(FriendItem(user)) }
+                FriendInfoList.add(friend)
             }
         })
     }
@@ -75,7 +78,7 @@ class UsersListActivity : AppCompatActivity() {
     }
 }
 
-class FriendItem(val user: User) : Item<ViewHolder>() {
+class FriendItem(private val user: User) : Item<ViewHolder>() {
     override fun getLayout() = R.layout.friend_list_item_layout
 
     override fun bind(viewHolder: ViewHolder, position: Int) {

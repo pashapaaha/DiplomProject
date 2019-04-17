@@ -5,9 +5,9 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import com.example.paaha.findyourfriend.R
 import com.example.paaha.findyourfriend.model.FriendInfo
+import com.example.paaha.findyourfriend.model.FriendInfoList
 import com.example.paaha.findyourfriend.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -61,7 +61,7 @@ class SearchNewFriendsActivity : AppCompatActivity() {
                     Log.d(TAG, "find user")
                     if (user != null && user.email.contains(emailPart)) {
                         val currentEmail = FirebaseAuth.getInstance().currentUser?.email
-                        if (user.email == currentEmail)
+                        if (user.email == currentEmail || FriendInfoList.contains(user.uid))
                             return@forEach
                         Log.d(TAG, "add user with email")
                         adapter.add(EmailItem(user))
@@ -88,8 +88,6 @@ class EmailItem(val user: User) : Item<ViewHolder>() {
         viewHolder.itemView.setOnClickListener {
             addFriend(viewHolder.itemView.context)
         }
-        //TODO: проверить обработчик нажатия кнопки. Должен добавляться пользователь
-        //TODO: добавить проверку, что друг еще не добавлен
     }
 
     private fun addFriend(context: Context){
