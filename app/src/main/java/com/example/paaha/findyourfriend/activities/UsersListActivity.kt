@@ -2,12 +2,10 @@ package com.example.paaha.findyourfriend.activities
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import com.example.paaha.findyourfriend.R
+import com.example.paaha.findyourfriend.activities.abstractActivities.LogoutMenuActivity
 import com.example.paaha.findyourfriend.model.FriendInfo
 import com.example.paaha.findyourfriend.model.FriendInfoList
 import com.example.paaha.findyourfriend.model.User

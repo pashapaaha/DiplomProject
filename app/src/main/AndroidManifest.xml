@@ -9,6 +9,7 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -43,9 +44,6 @@
         <activity
                 android:name=".activities.MapsActivity"
                 android:label="@string/title_activity_maps">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.example.paaha.findyourfriend.activities.LoginActivity"/>
         </activity>
 
         <service
@@ -55,8 +53,14 @@
         </service>
 
         <activity android:name=".activities.UsersListActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.example.paaha.findyourfriend.activities.MapsActivity"/>
         </activity>
         <activity android:name=".activities.SearchNewFriendsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.example.paaha.findyourfriend.activities.UsersListActivity"/>
         </activity>
     </application>
 

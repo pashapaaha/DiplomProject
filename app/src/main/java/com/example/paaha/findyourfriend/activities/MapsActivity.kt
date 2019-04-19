@@ -1,9 +1,13 @@
 package com.example.paaha.findyourfriend.activities
 
+import android.Manifest
+import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import com.example.paaha.findyourfriend.R
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -12,22 +16,26 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import android.view.MenuInflater
 import android.view.Menu
 import android.view.MenuItem
+import com.example.paaha.findyourfriend.activities.abstractActivities.LogoutMenuActivity
+import com.example.paaha.findyourfriend.algoritms.UserLocationListener
 
 
 class MapsActivity : LogoutMenuActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
 
+    private val LOCATION_PERMISSIONS =
+        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    private val REQUEST_LOCATION_PERMISSIONS = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+        mapInit()
+
+        startListenerWork()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -36,7 +44,7 @@ class MapsActivity : LogoutMenuActivity(), OnMapReadyCallback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when(item?.itemId){
+        return when (item?.itemId) {
             R.id.to_list_button -> {
                 startActivity(UsersListActivity.newIntent(this))
                 true
@@ -45,6 +53,13 @@ class MapsActivity : LogoutMenuActivity(), OnMapReadyCallback {
                 super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    fun mapInit() {
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
     /**
@@ -65,7 +80,24 @@ class MapsActivity : LogoutMenuActivity(), OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
+    fun startListenerWork() {
+        if (hasLocationPermission()) {
+            UserLocationListener.startLocation(this)
+        } else {
+            requestPermissions(LOCATION_PERMISSIONS, REQUEST_LOCATION_PERMISSIONS)
+        }
+    }
 
+    private fun hasLocationPermission(): Boolean {
+        val result = ContextCompat.checkSelfPermission(this, LOCATION_PERMISSIONS[0])
+        return result == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun addMarker(lat: Double, lng: Double) {
+        val me = LatLng(lat, lng)
+        mMap.addMarker(MarkerOptions().position(me).title("i'm here!"))
+    }
 
     companion object {
         fun newIntent(packageContext: Context): Intent {

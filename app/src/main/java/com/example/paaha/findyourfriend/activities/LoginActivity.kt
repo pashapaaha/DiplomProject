@@ -61,8 +61,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         mapButton.setOnClickListener {
-            //todo: check permissions
-            startActivity(MapsActivity.newIntent(this))//TODO: it will return
+            startActivity(MapsActivity.newIntent(this))
             finish()
         }
     }
