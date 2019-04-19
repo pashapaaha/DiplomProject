@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/to_list_button"
+        android:icon="@drawable/ic_to_friend_list"
+        android:title="@string/to_list"
+        android:showAsAction="ifRoom|withText" tools:targetApi="honeycomb"/>
+
+
+</menu>
