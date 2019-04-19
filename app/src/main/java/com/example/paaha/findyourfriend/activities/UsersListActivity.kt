@@ -30,12 +30,16 @@ class UsersListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users_list)
 
-        fetchFriends()
-        friend_recycler_view.adapter = adapter
-
         fab.setOnClickListener{
             startActivity(SearchNewFriendsActivity.newIntent(this))
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        fetchFriends()
+        friend_recycler_view.adapter = adapter
     }
 
     private fun fetchFriends() {
@@ -48,6 +52,7 @@ class UsersListActivity : AppCompatActivity() {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 FriendInfoList.clear()
+                adapter.clear()
                 snapshot.children.forEach {
                     val friendInfo = it.getValue(FriendInfo::class.java)
                     friendInfo?.let { addUserToAdapter(friendInfo.friend) }
