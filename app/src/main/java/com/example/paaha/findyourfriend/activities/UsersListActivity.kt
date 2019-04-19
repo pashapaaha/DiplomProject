@@ -5,6 +5,8 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import com.example.paaha.findyourfriend.R
 import com.example.paaha.findyourfriend.model.FriendInfo
 import com.example.paaha.findyourfriend.model.FriendInfoList
@@ -20,7 +22,7 @@ import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_users_list.*
 import kotlinx.android.synthetic.main.friend_list_item_layout.view.*
 
-class UsersListActivity : AppCompatActivity() {
+class UsersListActivity : LogoutMenuActivity() {
 
     private val TAG = this.javaClass.name
 

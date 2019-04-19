@@ -17,7 +17,7 @@ import android.view.Menu
 import android.view.MenuItem
 
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : LogoutMenuActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
 
