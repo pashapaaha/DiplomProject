@@ -9,12 +9,6 @@ import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.activity_login.*
-import android.Manifest.permission
-import android.content.pm.PackageManager
-import android.support.v4.content.ContextCompat
-import android.os.Build
-import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AlertDialog
 import com.example.paaha.findyourfriend.R
 import com.example.paaha.findyourfriend.model.User
 import com.google.android.gms.tasks.Task

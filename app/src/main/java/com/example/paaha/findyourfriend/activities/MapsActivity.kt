@@ -35,6 +35,10 @@ class MapsActivity : LogoutMenuActivity(), OnMapReadyCallback {
         setContentView(R.layout.activity_maps)
         mapInit()
 
+        //TODO: после того как координаты будут записываться в объект пользователя,
+        // обеспечить считывание местоположения всех активных пользователей,
+        // предумотреть отслеживание времени,
+        // если время будет превышать некоторое значение, маркер отображаться не должен
         startListenerWork()
     }
 
