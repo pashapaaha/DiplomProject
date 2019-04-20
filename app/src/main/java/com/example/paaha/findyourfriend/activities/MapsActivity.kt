@@ -19,7 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import android.view.Menu
 import android.view.MenuItem
 import com.example.paaha.findyourfriend.activities.abstractActivities.LogoutMenuActivity
-import com.example.paaha.findyourfriend.algoritms.UserLocationListener
+import com.example.paaha.findyourfriend.logic.UserLocationListener
 
 
 class MapsActivity : LogoutMenuActivity(), OnMapReadyCallback {

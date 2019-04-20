@@ -10,12 +10,11 @@ import android.widget.Toast
 import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.activity_login.*
 import com.example.paaha.findyourfriend.R
+import com.example.paaha.findyourfriend.logic.ValueEventAdapter
 import com.example.paaha.findyourfriend.model.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 
 class LoginActivity : AppCompatActivity() {
@@ -114,11 +113,9 @@ class LoginActivity : AppCompatActivity() {
                 .getReference(getString(R.string.key_users))
                 .child(currentUser!!.uid)
             var user: User?
-            ref.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {}
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    user = p0.getValue(User::class.java)
+            ref.addListenerForSingleValueEvent(object : ValueEventAdapter() {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    user = snapshot.getValue(User::class.java)
                     user?.let { updateUI(user) }
                 }
             })

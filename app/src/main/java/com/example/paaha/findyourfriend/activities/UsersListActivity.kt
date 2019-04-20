@@ -6,14 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import com.example.paaha.findyourfriend.R
 import com.example.paaha.findyourfriend.activities.abstractActivities.LogoutMenuActivity
+import com.example.paaha.findyourfriend.logic.ValueEventAdapter
 import com.example.paaha.findyourfriend.model.FriendInfo
 import com.example.paaha.findyourfriend.model.FriendInfoList
 import com.example.paaha.findyourfriend.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
@@ -50,9 +49,7 @@ class UsersListActivity : LogoutMenuActivity() {
             .getReference(getString(R.string.key_friends))
             .child(uid)
 
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {}
-
+        ref.addListenerForSingleValueEvent(object : ValueEventAdapter() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 FriendInfoList.clear()
                 adapter.clear()
@@ -70,9 +67,7 @@ class UsersListActivity : LogoutMenuActivity() {
             .getReference(getString(R.string.key_users))
             .child(friend)
 
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {}
-
+        ref.addListenerForSingleValueEvent(object : ValueEventAdapter() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val user = snapshot.getValue(User::class.java)
                 user?.let { adapter.add(FriendItem(user)) }

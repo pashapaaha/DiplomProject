@@ -1,4 +1,4 @@
-package com.example.paaha.findyourfriend.algoritms
+package com.example.paaha.findyourfriend.logic
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,9 +11,7 @@ import com.example.paaha.findyourfriend.R
 import com.example.paaha.findyourfriend.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class UserLocationListener : LocationListener {
 
@@ -75,13 +73,10 @@ class UserLocationListener : LocationListener {
             .getInstance()
             .getReference(context!!.getString(R.string.key_users))
             .child(uid)
-
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {}
-
-            override fun onDataChange(p0: DataSnapshot) {
+        ref.addListenerForSingleValueEvent(object : ValueEventAdapter() {
+            override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d(TAG, "updateUserLocations: start get user")
-                val user = p0.getValue(User::class.java)
+                val user = snapshot.getValue(User::class.java)
                 if (user != null) {
                     Log.d(TAG, "updateUserLocations: user not null")
                     ref.child("latitude").setValue(location.latitude)
