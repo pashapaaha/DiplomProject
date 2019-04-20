@@ -13,14 +13,13 @@
             android:id="@+id/add_friend_recycler_view"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:scrollbars="vertical"
             android:layout_weight="1"
+            android:scrollbars="vertical"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
     <android.support.v7.widget.LinearLayoutCompat
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_weight="8"
             android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatEditText
@@ -28,6 +27,7 @@
                 android:layout_height="match_parent"
                 android:ems="10"
                 android:layout_weight="1"
+                android:textSize="30sp"
                 android:hint="@string/email"
                 android:id="@+id/searchByEmailEditText"/>
 

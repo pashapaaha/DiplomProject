@@ -20,17 +20,26 @@ import kotlinx.android.synthetic.main.activity_search_friend.*
 import kotlinx.android.synthetic.main.one_string_layout.view.*
 
 class SearchNewFriendsActivity : AppCompatActivity() {
-    //TODO: обработать ситуацию, возникающую при повороте экрана
 
     private val TAG = this.javaClass.name
 
     val adapter = GroupAdapter<ViewHolder>()
+
+    private val SEARCH_STRING_EXTRA = "SRCH_STR"
+    var searchString: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_friend)
 
         add_friend_recycler_view.adapter = adapter
+
+        if(savedInstanceState != null){
+            searchString = savedInstanceState.getString(SEARCH_STRING_EXTRA)
+            if (!searchString.isNullOrEmpty()){
+                searchByEmailPart(searchString!!)
+            }
+        }
 
         findByEmailButton.setOnClickListener {
             Log.d(TAG, "search on click")
@@ -43,10 +52,17 @@ class SearchNewFriendsActivity : AppCompatActivity() {
             }
 
             Log.d(TAG, "success validation in on click")
+            searchString = emailPart.toLowerCase()
             searchByEmailPart(emailPart.toLowerCase())
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle?) {
+        if(!searchString.isNullOrEmpty()) {
+            super.onSaveInstanceState(outState)
+            outState?.putString(SEARCH_STRING_EXTRA, searchString)
+        }
+    }
 
     private fun searchByEmailPart(emailPart: String) {
         val ref = FirebaseDatabase
