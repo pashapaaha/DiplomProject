@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_search_friend.*
 import kotlinx.android.synthetic.main.one_string_layout.view.*
 
 class SearchNewFriendsActivity : AppCompatActivity() {
+    //TODO: обработать ситуацию, возникающую при повороте экрана
 
     private val TAG = this.javaClass.name
 

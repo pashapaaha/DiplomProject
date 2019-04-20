@@ -13,4 +13,6 @@ object FriendInfoList {
     }
 
     fun contains(item: String) = list.contains(item)
+
+    fun getList() = list.toMutableList()
 }
