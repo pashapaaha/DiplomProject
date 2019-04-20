@@ -95,14 +95,16 @@ class RegistrationActivity : AppCompatActivity() {
     private fun isSuccess() {
         val uid = FirebaseAuth.getInstance().uid ?: return
 
-        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
+        val ref = FirebaseDatabase.getInstance()
+            .getReference(getString(R.string.key_users))
+            .child(uid)
         Log.d(TAG, "reference get")
         val user = User(uid, email, name)
         ref.setValue(user)
             .addOnSuccessListener {
                 Log.d(TAG, "user $user was added")
             }
-            .addOnFailureListener{
+            .addOnFailureListener {
                 Log.d(TAG, "wrong added")
             }
 

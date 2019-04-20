@@ -7,6 +7,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
+import com.example.paaha.findyourfriend.R
 import com.example.paaha.findyourfriend.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -25,9 +26,13 @@ class UserLocationListener : LocationListener {
 
         private var mAuth: FirebaseAuth? = null
 
+        private var context: Context? = null
+
         @SuppressLint("MissingPermission")
         fun startLocation(context: Context) {
             Log.d(TAG, "startLocation method")
+            this.context = context
+
             mAuth = FirebaseAuth.getInstance()
 
             manager = context.getSystemService(Context.LOCATION_SERVICE)
@@ -63,12 +68,12 @@ class UserLocationListener : LocationListener {
     override fun onProviderEnabled(provider: String?) {}
     override fun onProviderDisabled(provider: String?) {}
 
-    private fun updateUserLocations(uid: String, location: Location){
+    private fun updateUserLocations(uid: String, location: Location) {
 
         Log.d(TAG, "updateUserLocations: started")
         val ref = FirebaseDatabase
             .getInstance()
-            .getReference("/users")
+            .getReference(context!!.getString(R.string.key_users))
             .child(uid)
 
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -77,7 +82,7 @@ class UserLocationListener : LocationListener {
             override fun onDataChange(p0: DataSnapshot) {
                 Log.d(TAG, "updateUserLocations: start get user")
                 val user = p0.getValue(User::class.java)
-                if(user != null){
+                if (user != null) {
                     Log.d(TAG, "updateUserLocations: user not null")
                     ref.child("latitude").setValue(location.latitude)
                     ref.child("longitude").setValue(location.longitude)

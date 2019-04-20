@@ -46,11 +46,6 @@
                 android:label="@string/title_activity_maps">
         </activity>
 
-        <service
-                android:name=".services.GPSService"
-                android:enabled="true"
-                android:exported="true">
-        </service>
 
         <activity android:name=".activities.UsersListActivity">
             <meta-data

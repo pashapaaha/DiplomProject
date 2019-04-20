@@ -49,7 +49,9 @@ class SearchNewFriendsActivity : AppCompatActivity() {
 
 
     private fun searchByEmailPart(emailPart: String) {
-        val ref = FirebaseDatabase.getInstance().getReference("/users")
+        val ref = FirebaseDatabase
+            .getInstance()
+            .getReference(getString(R.string.key_users))
 
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
@@ -90,10 +92,14 @@ class EmailItem(val user: User) : Item<ViewHolder>() {
         }
     }
 
-    private fun addFriend(context: Context){
+    private fun addFriend(context: Context) {
         val uid = FirebaseAuth.getInstance().uid ?: return
 
-        val ref = FirebaseDatabase.getInstance().getReference("/friends/$uid").push()
+        val ref = FirebaseDatabase
+            .getInstance()
+            .getReference(context.getString(R.string.key_friends))
+            .child(uid)
+            .push()
         if (ref.key == null)
             return
         val id = ref.key!!

@@ -20,8 +20,6 @@ import com.google.firebase.database.ValueEventListener
 
 class LoginActivity : AppCompatActivity() {
 
-    private val REQUEST_PERMISSIONS_CODE = 100
-
     private var mAuth: FirebaseAuth? = null
     private var currentUser: FirebaseUser? = null
 
@@ -111,7 +109,10 @@ class LoginActivity : AppCompatActivity() {
     private fun checkUser() {
         currentUser = FirebaseAuth.getInstance()?.currentUser
         if (currentUser != null) {
-            val ref = FirebaseDatabase.getInstance().getReference("/users").child(currentUser!!.uid)
+            val ref = FirebaseDatabase
+                .getInstance()
+                .getReference(getString(R.string.key_users))
+                .child(currentUser!!.uid)
             var user: User?
             ref.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {}

@@ -2,13 +2,13 @@ package com.example.paaha.findyourfriend.model
 
 object FriendInfoList {
 
-    private val list =  mutableListOf<String>()
+    private val list = mutableListOf<String>()
 
-    fun add(friend: String){
+    fun add(friend: String) {
         list.add(friend)
     }
 
-    fun clear(){
+    fun clear() {
         list.clear()
     }
 

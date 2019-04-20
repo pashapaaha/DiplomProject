@@ -30,7 +30,7 @@ class UsersListActivity : LogoutMenuActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users_list)
 
-        fab.setOnClickListener{
+        fab.setOnClickListener {
             startActivity(SearchNewFriendsActivity.newIntent(this))
         }
     }
@@ -45,7 +45,10 @@ class UsersListActivity : LogoutMenuActivity() {
     private fun fetchFriends() {
         Log.d(TAG, "fetchFriends method")
         val uid = FirebaseAuth.getInstance()?.uid ?: return
-        val ref = FirebaseDatabase.getInstance().getReference("/friends/$uid")
+        val ref = FirebaseDatabase
+            .getInstance()
+            .getReference(getString(R.string.key_friends))
+            .child(uid)
 
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
@@ -62,7 +65,10 @@ class UsersListActivity : LogoutMenuActivity() {
     }
 
     private fun addUserToAdapter(friend: String) {
-        val ref = FirebaseDatabase.getInstance().getReference("/users").child(friend)
+        val ref = FirebaseDatabase
+            .getInstance()
+            .getReference(getString(R.string.key_users))
+            .child(friend)
 
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
