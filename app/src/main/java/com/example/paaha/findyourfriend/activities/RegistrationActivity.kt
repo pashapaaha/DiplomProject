@@ -99,7 +99,8 @@ class RegistrationActivity : AppCompatActivity() {
             .getReference(getString(R.string.key_users))
             .child(uid)
         Log.d(TAG, "reference get")
-        val user = User(uid, email, name)
+        val pin = generateRandomPin()
+        val user = User(uid, email, name, pin)
         ref.setValue(user)
             .addOnSuccessListener {
                 Log.d(TAG, "user $user was added")
@@ -110,6 +111,8 @@ class RegistrationActivity : AppCompatActivity() {
 
         this.finish()
     }
+
+    private fun generateRandomPin() = String.format("%05d", (0..99_999).random())
 
     private fun isFailed(task: Task<AuthResult>) {
         Toast.makeText(this, getString(R.string.failed_reg), Toast.LENGTH_SHORT).show()
