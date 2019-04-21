@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FindYourFriend</string>
+    <string name="log_in">Вход</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="confirm_password">Повторите пароль</string>
+    <string name="registration">Регистрация</string>
+    <string name="display_name">Имя</string>
+    <string name="map">Карта</string>
+    <string name="log_out">Выход</string>
+    <string name="failed_login">Авторизация провалена</string>
+    <string name="failed_reg">Регистрация провалена</string>
+    <string name="not_valid_email">Не верный email</string>
+    <string name="input_password">Введите пароль</string>
+    <string name="input_name">Введите имч</string>
+    <string name="not_equals">Пароли не совпадают</string>
+    <string name="title_activity_maps">Карта</string>
+    <string name="friends">Друзья</string>
+    <string name="search_friends">Поиск друзей</string>
+    <string name="find">Поиск</string>
+    <string name="input_value">Введите значение</string>
+    <string name="to_list">Список друзей</string>
+</resources>

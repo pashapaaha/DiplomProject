@@ -3,7 +3,8 @@
     <string name="log_in">Log In</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="registration">registration</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="registration">Registration</string>
     <string name="display_name">Name</string>
     <string name="map">map</string>
     <string name="log_out">Log out</string>
@@ -15,6 +16,7 @@
     <string name="not_equals">passwords not equals</string>
     <string name="title_activity_maps">Map</string>
     <string name="friends">Friends</string>
+    <string name="search_friends">Search for friends</string>
     <string name="find">find</string>
     <string name="input_value">input value</string>
     <string name="to_list">Friends list</string>

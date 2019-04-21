@@ -27,7 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.RegistrationActivity">
+        <activity android:name=".activities.RegistrationActivity"
+            android:label="@string/registration">
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -42,17 +43,18 @@
                 android:value="@string/google_maps_key"/>
 
         <activity
-                android:name=".activities.MapsActivity"
-                android:label="@string/title_activity_maps">
+                android:name=".activities.MapsActivity">
         </activity>
 
 
-        <activity android:name=".activities.UsersListActivity">
+        <activity android:name=".activities.UsersListActivity"
+            android:label="@string/friends">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.example.paaha.findyourfriend.activities.MapsActivity"/>
         </activity>
-        <activity android:name=".activities.SearchNewFriendsActivity">
+        <activity android:name=".activities.SearchNewFriendsActivity"
+            android:label="@string/search_friends">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.example.paaha.findyourfriend.activities.UsersListActivity"/>
