@@ -3,6 +3,7 @@ package com.example.paaha.findyourfriend.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.example.paaha.findyourfriend.R
 import com.example.paaha.findyourfriend.activities.abstractActivities.LogoutMenuActivity
@@ -89,5 +90,10 @@ class FriendItem(private val user: User) : Item<ViewHolder>() {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.name_item_text_view.text = user.name
+
+        viewHolder.itemView.setOnClickListener{
+            (it.context as AppCompatActivity)
+                .startActivity(FriendViewActivity.newIntent(it.context, user.uid))
+        }
     }
 }
