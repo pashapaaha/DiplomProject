@@ -31,12 +31,15 @@
                 android:hint="@string/email"
                 android:id="@+id/searchByEmailEditText"/>
 
-        <android.support.v7.widget.AppCompatButton
+        <android.support.v7.widget.AppCompatImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/findByEmailButton"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="5"
-                android:text="@string/find"/>
+                android:src="@android:drawable/ic_menu_search"
+                android:background="@color/colorPrimary"/>
 
     </android.support.v7.widget.LinearLayoutCompat>
 
