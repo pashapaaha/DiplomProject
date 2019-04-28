@@ -55,13 +55,22 @@
 
     </android.support.v7.widget.LinearLayoutCompat>
 
+    <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/introduceTextView"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/friend_view_not_active"
+            android:textSize="22sp"
+            android:textColor="#000"
+            android:layout_margin="16dp"
+            android:layout_marginTop="60dp"/>
+
     <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/pinLayout"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:orientation="horizontal"
-            android:layout_margin="30dp"
-            android:layout_marginTop="60dp">
+            android:layout_margin="30dp">
 
 
         <android.support.v7.widget.AppCompatEditText
@@ -79,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_input_pin"
-                android:id="@+id/imageButton"
+                android:id="@+id/pinInputButton"
                 android:layout_marginLeft="8dp"/>
 
     </android.support.v7.widget.LinearLayoutCompat>

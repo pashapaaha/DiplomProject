@@ -22,4 +22,6 @@
     <string name="input_value">Введите значение</string>
     <string name="to_list">Список друзей</string>
     <string name="pin">Pin</string>
+    <string name="friend_view_active">Данный пользователь доступен для отображения на карте</string>
+    <string name="friend_view_not_active">Для активации пользователя введите пин-код.</string>
 </resources>

@@ -25,16 +25,47 @@ class FriendViewActivity : AppCompatActivity() {
 
         val userId = intent.getSerializableExtra(USER_ID) ?: return
         initUser(userId as String)
+
+        pinInputButton.setOnClickListener {
+            val userPin = user?.pin
+            if (userPin == null || userPin.isEmpty())
+                return@setOnClickListener
+
+            val inputPin = pinInput.text.toString()
+            if (userPin == inputPin) {
+                updateUserActive()
+            }
+        }
     }
 
-    private fun initUI() {
-        if (user != null){
+    private fun updateUserActive() {
+        val authUserId = FirebaseAuth.getInstance().uid ?: return
+        friendInfo?.active = true
+
+        FirebaseDatabase.getInstance()
+            .getReference(getString(R.string.key_friends))
+            .child(authUserId)
+            .child(friendInfo!!.id)
+            .setValue(friendInfo!!)
+
+        updateUI()
+
+    }
+
+    private fun updateUI() {
+        if (user != null) {
             friendViewName.text = user!!.name
             friendViewEmail.text = user!!.email
         }
-        if (friendInfo != null){
-            val visibility = if(friendInfo!!.active) View.GONE else View.VISIBLE
-            pinLayout.visibility = visibility
+        if (friendInfo != null) {
+            if (friendInfo!!.active) {
+                pinLayout.visibility = View.GONE
+                introduceTextView.text = getString(R.string.friend_view_active)
+
+            } else {
+                pinLayout.visibility = View.VISIBLE
+                introduceTextView.text = getString(R.string.friend_view_not_active)
+            }
         }
     }
 
@@ -46,7 +77,7 @@ class FriendViewActivity : AppCompatActivity() {
             .getReference(getString(R.string.key_users))
             .child(userId)
 
-        refUser.addListenerForSingleValueEvent(object: ValueEventAdapter(){
+        refUser.addListenerForSingleValueEvent(object : ValueEventAdapter() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 user = snapshot.getValue(User::class.java)
                 initFriendInfo(userId, authUserId)
@@ -55,18 +86,23 @@ class FriendViewActivity : AppCompatActivity() {
 
     }
 
-    private fun initFriendInfo(userId: String, authUserId: String){
+    private fun initFriendInfo(userId: String, authUserId: String) {
 
         val refFriendInfo = FirebaseDatabase
             .getInstance()
             .getReference(getString(R.string.key_friends))
             .child(authUserId)
-            .child(userId)
 
-        refFriendInfo.addListenerForSingleValueEvent(object: ValueEventAdapter(){
+        refFriendInfo.addListenerForSingleValueEvent(object : ValueEventAdapter() {
             override fun onDataChange(snapshot: DataSnapshot) {
-                friendInfo = snapshot.getValue(FriendInfo::class.java)
-                initUI()
+                snapshot.children.forEach {
+                    val friend = it.getValue(FriendInfo::class.java)
+                    if (friend != null && friend.friend == userId) {
+                        friendInfo = friend
+                        updateUI()
+                        return@forEach
+                    }
+                }
             }
         })
     }

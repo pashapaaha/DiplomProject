@@ -21,4 +21,6 @@
     <string name="input_value">input value</string>
     <string name="to_list">Friends list</string>
     <string name="pin">Pin</string>
+    <string name="friend_view_active">This user is available for display on the map.</string>
+    <string name="friend_view_not_active">To activate the user enter the pin code.</string>
 </resources>
