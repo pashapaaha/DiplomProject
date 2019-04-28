@@ -34,6 +34,8 @@ class FriendViewActivity : AppCompatActivity() {
             val inputPin = pinInput.text.toString()
             if (userPin == inputPin) {
                 updateUserActive()
+            } else {
+                pinInput.error = getString(R.string.wrong_pin)
             }
         }
     }
@@ -108,7 +110,7 @@ class FriendViewActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val USER_ID = "USER_ID"
+        private const val USER_ID = "USER_ID"
         fun newIntent(packageContext: Context, userID: String): Intent {
             val intent = Intent(packageContext, FriendViewActivity::class.java)
             intent.putExtra(USER_ID, userID)

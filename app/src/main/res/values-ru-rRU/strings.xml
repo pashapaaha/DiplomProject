@@ -26,4 +26,5 @@
     <string name="friend_view_not_active">Для активации пользователя введите пин-код.</string>
     <string name="about">Обо мне</string>
     <string name="your_pin">Ваш пин-код:</string>
+    <string name="wrong_pin">Неверный пин</string>
 </resources>
