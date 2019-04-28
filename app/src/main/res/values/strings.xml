@@ -23,4 +23,6 @@
     <string name="pin">Pin</string>
     <string name="friend_view_active">This user is available for display on the map.</string>
     <string name="friend_view_not_active">To activate the user enter the pin code.</string>
+    <string name="about">About</string>
+    <string name="your_pin">Your pin code:</string>
 </resources>

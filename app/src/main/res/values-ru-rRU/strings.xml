@@ -24,4 +24,6 @@
     <string name="pin">Pin</string>
     <string name="friend_view_active">Данный пользователь доступен для отображения на карте</string>
     <string name="friend_view_not_active">Для активации пользователя введите пин-код.</string>
+    <string name="about">Обо мне</string>
+    <string name="your_pin">Ваш пин-код:</string>
 </resources>

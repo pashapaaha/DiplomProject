@@ -19,7 +19,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import android.view.Menu
 import android.view.MenuItem
-import com.example.paaha.findyourfriend.activities.abstractActivities.LogoutMenuActivity
+import com.example.paaha.findyourfriend.activities.abstractActivities.DefaultMenuActivity
 import com.example.paaha.findyourfriend.logic.UserLocationListener
 import com.example.paaha.findyourfriend.logic.ValueEventAdapter
 import com.example.paaha.findyourfriend.model.FriendInfo
@@ -31,7 +31,7 @@ import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 
 
-class MapsActivity : LogoutMenuActivity(), OnMapReadyCallback {
+class MapsActivity : DefaultMenuActivity(), OnMapReadyCallback {
     private val TAG = this.javaClass.name
 
     private lateinit var mMap: GoogleMap

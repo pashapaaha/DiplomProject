@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".activities.FriendViewActivity">
+        tools:context=".activities.AboutActivity">
 
     <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
                 android:layout_marginEnd="20dp">
 
             <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/friendViewName"
+                    android:id="@+id/myNameView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -42,7 +42,7 @@
                     android:hint="@string/display_name"/>
 
             <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/friendViewEmail"
+                    android:id="@+id/myEmailView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -56,41 +56,22 @@
     </android.support.v7.widget.LinearLayoutCompat>
 
     <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/introduceTextView"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="@string/friend_view_not_active"
+            android:text="@string/your_pin"
             android:textSize="22sp"
             android:textColor="#000"
             android:layout_margin="16dp"
             android:layout_marginTop="60dp"/>
 
-    <android.support.v7.widget.LinearLayoutCompat
-            android:id="@+id/pinLayout"
+    <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/myPinView"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="30dp">
-
-
-        <android.support.v7.widget.AppCompatEditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:ems="5"
-                android:hint="@string/pin"
-                android:id="@+id/pinInput"
-                android:textSize="24sp"
-                android:maxLength="5"
-                android:textAlignment="center"/>
-
-        <android.support.v7.widget.AppCompatImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_input_pin"
-                android:id="@+id/pinInputButton"
-                android:layout_marginStart="8dp"/>
-
-    </android.support.v7.widget.LinearLayoutCompat>
+            android:hint="0000"
+            android:textSize="24sp"
+            android:textStyle="italic"
+            android:textColor="#000"
+            android:layout_margin="30dp"/>
 
 </android.support.v7.widget.LinearLayoutCompat>
