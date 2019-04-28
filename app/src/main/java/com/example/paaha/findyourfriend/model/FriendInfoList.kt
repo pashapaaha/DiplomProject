@@ -2,9 +2,9 @@ package com.example.paaha.findyourfriend.model
 
 object FriendInfoList {
 
-    private val list = mutableListOf<String>()
+    private val list = mutableListOf<FriendInfo>()
 
-    fun add(friend: String) {
+    fun add(friend: FriendInfo) {
         list.add(friend)
     }
 
@@ -12,7 +12,7 @@ object FriendInfoList {
         list.clear()
     }
 
-    fun contains(item: String) = list.contains(item)
+    fun contains(item: String) = list.map { it.friend }.contains(item)
 
     fun getList() = list.toMutableList()
 }

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import com.example.paaha.findyourfriend.R
 import com.example.paaha.findyourfriend.activities.abstractActivities.DefaultMenuActivity
 import com.example.paaha.findyourfriend.logic.ValueEventAdapter
@@ -56,23 +57,23 @@ class UsersListActivity : DefaultMenuActivity() {
                 adapter.clear()
                 snapshot.children.forEach {
                     val friendInfo = it.getValue(FriendInfo::class.java)
-                    friendInfo?.let { addUserToAdapter(friendInfo.friend) }
+                    friendInfo?.let { addUserToAdapter(friendInfo) }
                 }
             }
         })
     }
 
-    private fun addUserToAdapter(friend: String) {
+    private fun addUserToAdapter(friendInfo: FriendInfo) {
         val ref = FirebaseDatabase
             .getInstance()
             .getReference(getString(R.string.key_users))
-            .child(friend)
+            .child(friendInfo.friend)
 
         ref.addListenerForSingleValueEvent(object : ValueEventAdapter() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val user = snapshot.getValue(User::class.java)
-                user?.let { adapter.add(FriendItem(user)) }
-                FriendInfoList.add(friend)
+                user?.let { adapter.add(FriendItem(user, friendInfo.active)) }
+                FriendInfoList.add(friendInfo)
             }
         })
     }
@@ -85,12 +86,18 @@ class UsersListActivity : DefaultMenuActivity() {
     }
 }
 
-class FriendItem(private val user: User) : Item<ViewHolder>() {
+class FriendItem(
+    private val user: User
+    , private val active: Boolean
+) : Item<ViewHolder>() {
+
     override fun getLayout() = R.layout.friend_list_item_layout
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.name_item_text_view.text = user.name
-
+        if(!active){
+            viewHolder.itemView.friend_image_view.visibility = View.INVISIBLE
+        }
         viewHolder.itemView.setOnClickListener{
             (it.context as AppCompatActivity)
                 .startActivity(FriendViewActivity.newIntent(it.context, user.uid))

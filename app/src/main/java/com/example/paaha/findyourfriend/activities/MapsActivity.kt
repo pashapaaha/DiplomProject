@@ -118,7 +118,9 @@ class MapsActivity : DefaultMenuActivity(), OnMapReadyCallback {
                     val friendInfo = it.getValue(FriendInfo::class.java)
                     friendInfo?.let {
                         Log.d(TAG, "onCreate: friend is added")
-                        FriendInfoList.add(friendInfo.friend)
+                        if(friendInfo.active) {
+                            FriendInfoList.add(friendInfo)
+                        }
                     }
                 }
             }
@@ -134,9 +136,9 @@ class MapsActivity : DefaultMenuActivity(), OnMapReadyCallback {
         mMap.clear()
 
         val shownUsers = FriendInfoList.getList()
-        shownUsers.add(currentUID)
+        shownUsers.add(FriendInfo(friend = currentUID))
         shownUsers.forEach {
-            ref.child(it).addListenerForSingleValueEvent(object : ValueEventAdapter() {
+            ref.child(it.friend).addListenerForSingleValueEvent(object : ValueEventAdapter() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     super.onDataChange(snapshot)
                     val user = snapshot.getValue(User::class.java)
